@@ -1,0 +1,43 @@
+﻿<div class="card @SelectedCSS m-2" @onclick="HandleOnSelected">
+    <div class="card-body text-center">
+        <span class="h1 oi oi-@iconCSSClass"></span>
+        <h1 class="card-title">@TemperatureC C&deg;</h1>
+        @CustomMessage
+        <p class="card-text">@Summary weather expected @DayofWeek</p>
+    </div>
+
+</div>
+
+@code {
+
+    [Parameter]
+    public string Summary { get; set; }
+
+    [Parameter]
+    public string TemperatureC { get; set; }
+
+    [Parameter]
+    public DayOfWeek DayofWeek { get; set; }
+
+    string iconCSSClass =>
+        Summary == "Cloudy" ? "cloud" :
+        Summary == "Rainy" ? "rain" :
+        "sun";
+
+    [Parameter]
+    public RenderFragment CustomMessage { get; set; }
+
+    [Parameter]
+    public EventCallback<DayOfWeek> OnSelected { get; set; }
+
+    void HandleOnSelected()
+    {
+        OnSelected.InvokeAsync(this.DayofWeek);
+    }
+
+    [Parameter]
+    public bool Selected { get; set; }
+
+    private string SelectedCSS => Selected ? "bg-primary text-white" : "bg-light";
+}
+
